@@ -9,27 +9,18 @@ const password = ref('')
 const router = useRouter()
 
 const loginUser = async () => {
-  // await axios.get('/sanctum/csrf-cookie')
-
-  const response = await service.user.login({
+  const response = await service.users.login({
     email: email.value,
     password: password.value
   })
 
   localStorage.setItem('auth_token', response.token)
 
-  router.push('/task-board')
+  router.push('/auth/manage')
 
   try {
   } catch (error) {
     console.error('Erro ao registrar usuário:', error)
-
-    if (error.response?.errors) {
-      const errors = Object.values(error.response.errors).flat()
-      alert(errors.join('\n'))
-    } else {
-      alert('An error occurred while registering')
-    }
   }
 }
 </script>
