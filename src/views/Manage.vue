@@ -21,13 +21,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="d-flex flex-column justify-content-center align-items-center">
+  <div class="d-flex flex-column align-items-center p-3">
     <div
-      class="d-flex flex-column justify-content-center align-items-center mb-5"
+      class="d-flex flex-column justify-content-center align-items-center mt-4 mb-4 sriracha-font text-center"
     >
-      <h2>Bem vindo, {{ name.toLocaleUpperCase() }}</h2>
+      <h2>
+        Bem vindo,
+        <span class="text-color-gold">{{ name.toLocaleUpperCase() }}</span>
+      </h2>
       <h3>Não deixe para amanhã o que pode fazer hoje!</h3>
     </div>
+    <TaskBoard />
   </div>
-  <TaskBoard />
 </template>

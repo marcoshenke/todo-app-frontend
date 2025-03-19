@@ -24,7 +24,6 @@ const props = defineProps({
                 readonly
               />
             </div>
-
             <div class="mb-3">
               <label class="form-label">Descrição</label>
               <textarea
@@ -33,18 +32,7 @@ const props = defineProps({
                 readonly
               ></textarea>
             </div>
-
-            <div class="mb-3">
-              <label class="form-label">Data da Tarefa</label>
-              <input
-                type="date"
-                class="form-control"
-                :value="task?.task_date"
-                readonly
-              />
-            </div>
           </div>
-
           <div class="modal-footer">
             <button
               type="button"

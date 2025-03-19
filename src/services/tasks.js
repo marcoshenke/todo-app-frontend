@@ -10,7 +10,19 @@ const list = async (params) => {
     return response.data; 
 }
 
+const update = async (taskId, data) => {
+    const response = await api.put(`/tasks/${taskId}`, data);
+    return response.data; 
+}
+
+const destroy = async (taskId) => {
+    const response = await api.delete(`/tasks/${taskId}`);
+    return response.data; 
+}
+
 export default {
     create,
-    list
+    list,
+    update,
+    destroy,
 }

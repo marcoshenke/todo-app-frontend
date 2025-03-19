@@ -15,11 +15,33 @@ const logout = async () => {
 }
 </script>
 <template>
-  <nav class="navbar sticky-top bg-body-tertiary">
-    <div class="container-fluid d-flex">
-      <a class="navbar-brand" href="#">TodoApp</a>
+  <nav class="navbar sticky-top p-2 bg_purple_background">
+    <div class="d-flex align-items-center">
+      <img
+        src="@/assets/logo-app-todo.png"
+        alt="Logo TodoApp"
+        width="60"
+        height="60"
+        class="d-inline-block align-text-top"
+      />
+      <div class="d-flex justify-content-beetween">
+        <a class="navbar-brand alfa-font font-style-24 text-color-gold" href="#"
+          >TodoApp</a
+        >
+      </div>
     </div>
-    <button class="btn btn-dark" @click="logout">Sair</button>
+    <button class="btn btn-dark min-vw-100px fw-bold" @click="logout">
+      Sair
+    </button>
   </nav>
   <router-view />
+  <nav
+    class="navbar sticky-top p-2 bg_purple_background justify-content-center alfa-font"
+  >
+    Feito por &nbsp;<a
+      class="text-decoration-none can-click text-color-gold"
+      href="https://www.linkedin.com/in/marcos-e-s-henke/"
+      >Marcos</a
+    >
+  </nav>
 </template>

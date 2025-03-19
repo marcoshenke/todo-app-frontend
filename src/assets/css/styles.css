@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Sriracha&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+
+.alfa-font {
+  font-family: "Alfa Slab One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.sriracha-font {
+  font-family: "Sriracha", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.winky-sans-font {
+  font-family: "Winky Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+body {
+  font-family: "Winky Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.bg_purple_background {
+  background-color: rgb(98, 11, 180);
+}
+
+.text-color-gold {
+  color: rgb(255, 215, 0);
+}
+
+.font-style-24 {
+  font-size: 24px;
+}
+
+.can-click {
+  cursor: pointer;
+}
+
+.min-vw-100px {
+  min-width: 100px;
+}

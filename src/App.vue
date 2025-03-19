@@ -2,7 +2,7 @@
   <router-view v-slot="{ Component, route }">
     <div
       :key="route.name"
-      class="d-flex flex-column vh-100 vw-100 bg-dark text-light p-2"
+      class="d-flex flex-column bg-dark text-light min-vh-100"
     >
       <Component :is="Component" />
     </div>
