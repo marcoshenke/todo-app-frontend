@@ -1,6 +1,13 @@
 import axios from 'axios'
 
-const apiUrl = 'http://localhost:8000'
+const envApiUrl = () => {
+  if (import.meta.env.VITE_MODE === 'development') {
+    return 'http://localhost:8000'
+  }
+  return 'https://todo-app-x4hz.onrender.com'
+}
+
+const apiUrl = envApiUrl()
 const api = axios.create({
   baseURL: `${apiUrl}/api`,
   withCredentials: true
