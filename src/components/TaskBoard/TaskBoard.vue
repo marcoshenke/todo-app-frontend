@@ -3,15 +3,19 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { Field } from 'vee-validate'
 import services from '@/services'
 import { Tooltip, Modal } from 'bootstrap'
+
 import { ManageTaskModal, TaskList, ViewTaskModal } from './components'
+import { LoadingCircle } from '@/components'
 
 const task_date = ref(new Date().toLocaleDateString('fr-CA'))
 const tasks = ref([])
 const selectedTask = ref(null)
 const editingTask = ref(null)
+const isLoading = ref(false)
 
 const fetchTasksByDate = async (date) => {
   try {
+    isLoading.value = true
     const response = await services.tasks.list({
       task_date: date
     })
@@ -19,10 +23,11 @@ const fetchTasksByDate = async (date) => {
     if (task_date.value !== date) {
       task_date.value = date
     }
-
     tasks.value = response
   } catch (error) {
-    console.error('Erro ao buscar tarefas:', error)
+    console.error('Error fetching Tasks:', error)
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -36,36 +41,50 @@ const pendingTasks = computed(() =>
 
 const viewTask = (task) => {
   selectedTask.value = task
-  const modal = new Modal(document.getElementById('viewTaskModal'))
+  const modal = Modal.getOrCreateInstance(
+    document.querySelector('#viewTaskModal')
+  )
   modal.show()
-}
-
-const manageCompleteTask = async (task) => {
-  try {
-    await services.tasks.update(task.id, { completed: !task.completed })
-    fetchTasksByDate(task_date.value)
-  } catch (error) {
-    console.error('Erro ao concluir tarefa:', error)
-  }
-}
-
-const deleteTask = async (task) => {
-  try {
-    await services.tasks.destroy(task.id)
-    fetchTasksByDate(task_date.value)
-  } catch (error) {
-    console.error('Erro ao excluir tarefa:', error)
-  }
 }
 
 const openEditTaskModal = (task) => {
   editingTask.value = task
-  const modal = new Modal(document.getElementById('ManageTaskModal'))
+  const modal = Modal.getOrCreateInstance(
+    document.querySelector('#manageTaskModal')
+  )
   modal.show()
 }
 
 const closeTaskModal = () => {
   editingTask.value = null
+  const modal = Modal.getOrCreateInstance(
+    document.querySelector('#manageTaskModal')
+  )
+  modal.hide()
+}
+
+const manageCompleteTask = async (task) => {
+  try {
+    isLoading.value = true
+    await services.tasks.update(task.id, { completed: !task.completed })
+    fetchTasksByDate(task_date.value)
+  } catch (error) {
+    console.error('Error completing task:', error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const deleteTask = async (task) => {
+  try {
+    isLoading.value = true
+    await services.tasks.destroy(task.id)
+    fetchTasksByDate(task_date.value)
+  } catch (error) {
+    console.error('Error when deleting task:', error)
+  } finally {
+    isLoading.value = false
+  }
 }
 
 watch(task_date, async (newDate, oldDate) => {
@@ -83,20 +102,16 @@ onMounted(() => {
 </script>
 
 <template>
+  <LoadingCircle :isLoading="isLoading" />
   <div
-    class="card text-bg-dark mb-3 border border-light w-100 align-self-center"
-    style="max-width: 700px"
+    class="card text-bg-dark mb-3 border border-light w-100 align-self-center mw-500px"
   >
     <div class="card-header text-center">
       <div>
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <h4>Tarefas</h4>
-          <button
-            class="btn btn-light"
-            data-bs-target="#ManageTaskModal"
-            data-bs-toggle="modal"
-          >
-            Nova
+          <h4>Tasks</h4>
+          <button class="btn button_secondary" @click="openEditTaskModal(null)">
+            New
           </button>
         </div>
         <Field
@@ -109,7 +124,7 @@ onMounted(() => {
     </div>
     <TaskList
       :tasks="pendingTasks"
-      title="Pendentes"
+      title="Pending"
       :completed="false"
       @view="viewTask"
       @manageCompleteTask="manageCompleteTask"
@@ -120,15 +135,16 @@ onMounted(() => {
       v-if="pendingTasks.length === 0"
       class="text-center p-3 border-top border-light"
     >
-      <p>Nenhuma tarefa pendente encontrada para esta data.</p>
+      <p>No pending tasks found for this date.</p>
     </div>
     <TaskList
       :tasks="completedTasks"
-      title="Concluídas"
+      title="Completed"
       :completed="true"
       @view="viewTask"
       @manageCompleteTask="manageCompleteTask"
       @deleteTask="deleteTask"
+      :isLoading="isLoading"
     />
   </div>
   <ManageTaskModal

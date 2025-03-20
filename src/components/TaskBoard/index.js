@@ -1,1 +1,1 @@
-export {default} from './TaskBoard.vue'
+export { default } from './TaskBoard.vue'

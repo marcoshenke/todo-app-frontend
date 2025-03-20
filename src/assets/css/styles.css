@@ -27,6 +27,31 @@ body {
   font-style: normal;
 }
 
+button {
+  min-width: 100px
+}
+
+.button_primary {
+  background-color: rgb(255, 215, 0);
+  color: rgb(98, 11, 180);
+  font-weight: 700;
+}
+
+.button_primary:hover {
+  background-color: #ffffff55;
+  color: rgb(255, 215, 0);
+}
+
+.button_secondary {
+  background-color: rgb(98, 11, 180);
+  color: rgb(255, 215, 0);
+  font-weight: 700;
+}
+
+.button_secondary:hover {
+  background-color: #ffffffb8;
+  color: rgb(98, 11, 180);
+}
 
 .bg_purple_background {
   background-color: rgb(98, 11, 180);
@@ -44,6 +69,28 @@ body {
   cursor: pointer;
 }
 
+.mw-500px {
+  max-width: 500px;
+}
+
 .min-vw-100px {
   min-width: 100px;
+}
+.loading-overlay {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; 
+}
+
+.loading {
+  color:rgb(255, 215, 0);
+  width: 50px;
+  height: 50px;
+  font-size: 30px;
 }

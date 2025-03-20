@@ -4,7 +4,8 @@ import { defineProps } from 'vue'
 const props = defineProps({
   tasks: Array,
   title: String,
-  completed: Boolean
+  completed: Boolean,
+  isLoading: Boolean
 })
 
 const emit = defineEmits([
@@ -45,7 +46,7 @@ const emit = defineEmits([
           <i
             class="bi bi-eye me-2"
             data-bs-toggle="tooltip"
-            data-bs-title="Visualizar"
+            data-bs-title="View"
             style="font-size: 1.5rem; cursor: pointer"
             @click="emit('view', task)"
           ></i>
@@ -60,9 +61,9 @@ const emit = defineEmits([
           <i
             class="bi bi-x"
             data-bs-toggle="tooltip"
-            data-bs-title="Excluir"
+            data-bs-title="Delete"
             style="font-size: 1.8rem; cursor: pointer"
-            @click="emit('deleteTask', task)"
+            @click="!isLoading && emit('deleteTask', task)"
           ></i>
         </div>
       </div>

@@ -12,11 +12,11 @@ const props = defineProps({
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-dark p-3">
           <div class="modal-header">
-            <h5 class="modal-title">Visualizar Tarefa</h5>
+            <h4 class="modal-title">View Task</h4>
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label class="form-label">Título</label>
+              <label class="form-label">Title</label>
               <input
                 type="text"
                 class="form-control"
@@ -39,7 +39,7 @@ const props = defineProps({
               class="btn btn-outline-warning"
               data-bs-dismiss="modal"
             >
-              Fechar
+              Close
             </button>
           </div>
         </div>

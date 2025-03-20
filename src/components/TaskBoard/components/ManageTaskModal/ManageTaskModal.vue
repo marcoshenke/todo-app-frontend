@@ -1,11 +1,14 @@
 <script setup>
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useForm, useField, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 
 import services from '@/services'
+import { LoadingCircle } from '@/components'
 
 const emit = defineEmits(['fetchTasksByDate', 'closeTaskModal'])
+
+const isLoading = ref(false)
 
 const props = defineProps({
   task: Object,
@@ -13,9 +16,9 @@ const props = defineProps({
 })
 
 const schema = yup.object({
-  title: yup.string().max(50).required('O título é obrigatório'),
+  title: yup.string().max(50).required('Title is mandatory'),
   description: yup.string(),
-  task_date: yup.date().nullable().typeError('Data inválida')
+  task_date: yup.date().nullable().typeError('Invalid date')
 })
 
 const { value: title } = useField('title')
@@ -31,24 +34,30 @@ const closeModal = () => {
   resetForm()
 }
 
+const saveTask = async (paramsFormated) => {
+  if (props.task) {
+    return await services.tasks.update(props.task.id, paramsFormated)
+  }
+  await services.tasks.create(paramsFormated)
+}
+
 const onSubmit = handleSubmit(async (formValues) => {
   try {
+    isLoading.value = true
     const paramsFormated = {
       title: formValues.title,
       description: formValues.description,
       task_date: formValues.task_date ? new Date(formValues.task_date) : null
     }
 
-    if (props.task) {
-      await services.tasks.update(props.task.id, paramsFormated)
-    } else {
-      await services.tasks.create(paramsFormated)
-    }
+    await saveTask(paramsFormated)
 
     emit('fetchTasksByDate', formValues.task_date)
     closeModal()
   } catch (error) {
-    console.error('Erro ao salvar tarefa:', error)
+    console.error('Error saving task:', error)
+  } finally {
+    isLoading.value = false
   }
 })
 
@@ -63,14 +72,15 @@ watch(
           ? new Date(newTask.task_date).toISOString().split('T')[0]
           : ''
       })
-    } else {
-      resetForm()
-      setValues({
-        title: '',
-        description: '',
-        task_date: new Date().toISOString().split('T')[0]
-      })
+      return
     }
+
+    resetForm()
+    setValues({
+      title: '',
+      description: '',
+      task_date: new Date().toISOString().split('T')[0]
+    })
   },
   { immediate: true }
 )
@@ -78,18 +88,19 @@ watch(
 
 <template>
   <div class="py-2">
-    <div class="modal" id="ManageTaskModal">
+    <LoadingCircle :isLoading="isLoading" />
+    <div class="modal" id="manageTaskModal">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-dark p-3">
           <div class="modal-header">
-            <h5 class="modal-title">
-              {{ task ? 'Editar Tarefa' : 'Criar Tarefa' }}
-            </h5>
+            <h4 class="modal-title">
+              {{ task ? 'Edit Task' : 'Create Task' }}
+            </h4>
           </div>
           <div class="modal-body">
             <form @submit.prevent="onSubmit">
               <div class="mb-3">
-                <label class="form-label">Título</label>
+                <label class="form-label">Title</label>
                 <Field
                   name="title"
                   type="text"
@@ -100,7 +111,7 @@ watch(
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Descrição</label>
+                <label class="form-label">Description</label>
                 <Field
                   name="description"
                   type="text"
@@ -111,7 +122,7 @@ watch(
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Data da Tarefa</label>
+                <label class="form-label">Task date</label>
                 <Field
                   name="task_date"
                   type="date"
@@ -120,21 +131,16 @@ watch(
                 />
                 <ErrorMessage name="task_date" class="text-danger" />
               </div>
-              <div class="modal-footer">
+              <div class="modal-footer d-flex gap-2">
                 <button
                   type="button"
                   class="btn btn-outline-warning"
-                  data-bs-dismiss="modal"
                   @click="closeModal"
                 >
-                  Fechar
+                  Close
                 </button>
-                <button
-                  type="submit"
-                  class="btn btn-light"
-                  data-bs-dismiss="modal"
-                >
-                  {{ task ? 'Atualizar' : 'Salvar' }}
+                <button type="submit" class="btn btn-light">
+                  {{ task ? 'Update' : 'Save' }}
                 </button>
               </div>
             </form>
