@@ -4,8 +4,7 @@ A simple and elegant Todo App built with Vue.js. This is the frontend interface 
 
 ## 🚀 Live Preview
 
-> Add a link here if deployed (e.g. Vercel/Netlify)  
-> _Example_: [View Live](https://todo-app-marcos-es-henke.vercel.app)
+> [TodoApp](https://todo-app-marcos-es-henke.vercel.app)
 
 ## ⚙️ Tech Stack
 
