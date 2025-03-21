@@ -7,7 +7,8 @@ const create = async (data) => {
 
 const list = async (params) => {
   const response = await api.get('/tasks', { params })
-  return response.data
+
+  return response.data.data
 }
 
 const update = async (taskId, data) => {

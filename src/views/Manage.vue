@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 
 import { TaskBoard } from '@/components'
 import service from '@/services'
+import { toastBar } from '@/helpers'
 
 const name = ref('')
 
@@ -12,6 +13,10 @@ const fetchUser = async () => {
     name.value = response.user.name
   } catch (error) {
     console.error('Error when searching for user:', error)
+    toastBar({
+      message: 'An unexpected error occurred while searching for user',
+      type: 'error'
+    })
   }
 }
 

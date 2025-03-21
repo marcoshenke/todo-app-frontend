@@ -5,6 +5,7 @@ import * as yup from 'yup'
 
 import { TodoSlogan } from '@/components'
 import service from '@/services'
+import { toastBar } from '@/helpers'
 
 const router = useRouter()
 
@@ -34,7 +35,11 @@ const onSubmit = handleSubmit(async (values) => {
     localStorage.setItem('auth_token', response.token)
     router.push('/auth/manage')
   } catch (error) {
-    console.error('Error registering user:', error)
+    console.error('An unexpected error occurred while registering:', error)
+    toastBar({
+      message: 'An unexpected error occurred while registering',
+      type: 'error'
+    })
   }
 })
 </script>

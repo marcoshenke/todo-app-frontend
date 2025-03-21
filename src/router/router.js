@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import { Login, Manage, Register } from '@/views'
-
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
+
 import users from '@/services/users'
+import { toastBar } from '@/helpers'
 
 const routes = [
   {
@@ -35,40 +36,41 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach(async (to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem('auth_token')
+const toastErrorAuthentication = () => {
+  toastBar({
+    message: 'An error occurred with your authentication.',
+    type: 'error'
+  })
+}
 
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    return next('/login')
+router.beforeEach(async (to, from, next) => {
+  const token = localStorage.getItem('auth_token')
+  const isAuthenticated = !!token
+
+  if (to.meta.requiresAuth) {
+    if (!isAuthenticated) {
+      console.log('User is not authenticated')
+      toastErrorAuthentication()
+      return next('/login')
+    }
+
+    try {
+      const isValidToken = await users.validateToken()
+      console.log('isValidToken', isValidToken)
+      if (!isValidToken) {
+        localStorage.removeItem('auth_token')
+        toastErrorAuthentication()
+        return next('/login')
+      }
+    } catch (error) {
+      console.error(error)
+      localStorage.removeItem('auth_token')
+      toastErrorAuthentication()
+      return next('/login')
+    }
   }
 
   next()
 })
-
-//   router.beforeEach(async (to, from, next) => {
-//     const token = localStorage.getItem('auth_token')
-//     const isAuthenticated = !!token
-
-//     if (to.meta.requiresAuth) {
-//       if (!isAuthenticated) {
-//         return next('/login')
-//       }
-
-//       try {
-//         const isValidToken = await users.validateToken()
-//         if (!isValidToken) {
-//           console.error('Invalid token')
-//           localStorage.removeItem('auth_token')
-//           return next('/login')
-//         }
-//       } catch (error) {
-//         console.error('Error validating token::', error)
-//         localStorage.removeItem('auth_token')
-//         return next('/login')
-//       }
-//     }
-
-//     next()
-//   })
 
 export default router

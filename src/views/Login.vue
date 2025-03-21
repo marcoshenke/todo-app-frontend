@@ -6,6 +6,7 @@ import * as yup from 'yup'
 
 import { LoadingCircle, TodoSlogan } from '@/components'
 import service from '@/services'
+import { toastBar } from '@/helpers'
 
 const isLoading = ref(false)
 
@@ -33,12 +34,15 @@ const onSubmit = handleSubmit(async (values) => {
       email: values.email,
       password: values.password
     })
-
     localStorage.setItem('auth_token', response.token)
 
     router.push('/auth/manage')
   } catch (error) {
-    console.error('Error registering user:', error)
+    console.error('An unexpected error occurred while logging in:', error)
+    toastBar({
+      message: 'An unexpected error occurred while logging in',
+      type: 'error'
+    })
   } finally {
     isLoading.value = false
   }

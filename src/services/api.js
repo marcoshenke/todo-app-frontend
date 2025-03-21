@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { toastBar } from '@/helpers'
 
 const envApiUrl = () => {
   if (import.meta.env.VITE_MODE === 'development') {
@@ -34,13 +35,15 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => {
-    return response.data
+    return response
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      console.warn('Não autorizado. Redirecionando para login...')
       localStorage.removeItem('auth_token')
-      window.location.href = '/login'
+      toastBar({
+        message: 'You are not authorized to perform this action.',
+        type: 'error'
+      })
     }
     return Promise.reject(error)
   }

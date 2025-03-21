@@ -5,6 +5,7 @@ import * as yup from 'yup'
 
 import services from '@/services'
 import { LoadingCircle } from '@/components'
+import { toastBar } from '@/helpers'
 
 const emit = defineEmits(['fetchTasksByDate', 'closeTaskModal'])
 
@@ -54,8 +55,16 @@ const onSubmit = handleSubmit(async (formValues) => {
 
     emit('fetchTasksByDate', formValues.task_date)
     closeModal()
+    toastBar({
+      message: `Task was ${props.task ? 'edited' : 'saved'} successfully`,
+      type: 'success'
+    })
   } catch (error) {
     console.error('Error saving task:', error)
+    toastBar({
+      message: 'An unexpected error occurred while saving task',
+      type: 'error'
+    })
   } finally {
     isLoading.value = false
   }

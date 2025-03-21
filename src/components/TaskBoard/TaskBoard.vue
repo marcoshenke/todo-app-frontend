@@ -6,6 +6,7 @@ import { Tooltip, Modal } from 'bootstrap'
 
 import { ManageTaskModal, TaskList, ViewTaskModal } from './components'
 import { LoadingCircle } from '@/components'
+import { toastBar } from '@/helpers'
 
 const task_date = ref(new Date().toLocaleDateString('fr-CA'))
 const tasks = ref([])
@@ -26,6 +27,10 @@ const fetchTasksByDate = async (date) => {
     tasks.value = response
   } catch (error) {
     console.error('Error fetching Tasks:', error)
+    toastBar({
+      message: 'An unexpected error occurred while fetching tasks',
+      type: 'error'
+    })
   } finally {
     isLoading.value = false
   }
@@ -70,6 +75,10 @@ const manageCompleteTask = async (task) => {
     fetchTasksByDate(task_date.value)
   } catch (error) {
     console.error('Error completing task:', error)
+    toastBar({
+      message: 'An unexpected error occurred while completing task',
+      type: 'error'
+    })
   } finally {
     isLoading.value = false
   }
@@ -82,6 +91,10 @@ const deleteTask = async (task) => {
     fetchTasksByDate(task_date.value)
   } catch (error) {
     console.error('Error when deleting task:', error)
+    toastBar({
+      message: 'An unexpected error occurred while deleting task',
+      type: 'error'
+    })
   } finally {
     isLoading.value = false
   }
