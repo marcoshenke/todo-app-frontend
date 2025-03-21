@@ -2,10 +2,10 @@ import axios from 'axios'
 import { toastBar } from '@/helpers'
 
 const envApiUrl = () => {
-  return 'http://localhost:8000'
-  // if (import.meta.env.VITE_MODE === 'development') {
-  //   return 'https://todo-app-x4hz.onrender.com'
-  // }
+  if (import.meta.env.VITE_MODE === 'development') {
+    return 'http://localhost:8000'
+  }
+  return 'https://todo-app-x4hz.onrender.com'
 }
 
 const apiUrl = envApiUrl()
