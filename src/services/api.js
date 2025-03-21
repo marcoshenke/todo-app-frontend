@@ -18,12 +18,12 @@ axios.defaults.headers.common['Accept'] = 'application/json'
 
 api.interceptors.request.use(
   async (config) => {
-    if (!document.cookie.includes('XSRF-TOKEN')) {
-      await axios.get(`${apiUrl}/sanctum/csrf-cookie`, {
-        withCredentials: true,
-        withXSRFToken: true
-      })
-    }
+    // if (!document.cookie.includes('XSRF-TOKEN')) {
+    //   await axios.get(`${apiUrl}/sanctum/csrf-cookie`, {
+    //     withCredentials: true,
+    //     withXSRFToken: true
+    //   })
+    // }
 
     const token = localStorage.getItem('auth_token')
     if (token) {
