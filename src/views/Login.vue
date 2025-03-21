@@ -28,8 +28,8 @@ const { handleSubmit } = useForm({
 })
 
 const onSubmit = handleSubmit(async (values) => {
-  isLoading.value = true
   try {
+    isLoading.value = true
     const response = await service.users.login({
       email: values.email,
       password: values.password

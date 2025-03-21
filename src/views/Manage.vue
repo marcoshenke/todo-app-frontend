@@ -28,6 +28,7 @@ onMounted(() => {
 <template>
   <div class="d-flex flex-column align-items-center p-3 min-vh-100">
     <div
+      v-if="!!name"
       class="d-flex flex-column justify-content-center align-items-center mt-4 mb-4 sriracha-font text-center"
     >
       <h2>

@@ -1,13 +1,16 @@
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useForm, useField, Field, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 
-import { TodoSlogan } from '@/components'
+import { LoadingCircle, TodoSlogan } from '@/components'
 import service from '@/services'
 import { toastBar } from '@/helpers'
 
 const router = useRouter()
+
+const isLoading = ref(false)
 
 const schema = yup.object({
   name: yup.string().required('Name is mandatory'),
@@ -31,6 +34,7 @@ const { value: password } = useField('password')
 
 const onSubmit = handleSubmit(async (values) => {
   try {
+    isLoading.value = true
     const response = await service.users.createUser(values)
     localStorage.setItem('auth_token', response.token)
     router.push('/auth/manage')
@@ -40,6 +44,8 @@ const onSubmit = handleSubmit(async (values) => {
       message: 'An unexpected error occurred while registering',
       type: 'error'
     })
+  } finally {
+    isLoading.value = false
   }
 })
 </script>
@@ -49,6 +55,7 @@ const onSubmit = handleSubmit(async (values) => {
     <div
       class="d-flex flex-column justify-content-center align-items-center m-4"
     >
+      <LoadingCircle :isLoading="isLoading" />
       <form @submit.prevent="onSubmit">
         <h2 class="text-center">Create Account</h2>
         <div class="mb-3">
