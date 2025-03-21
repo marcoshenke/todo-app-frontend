@@ -2,10 +2,10 @@ import axios from 'axios'
 import { toastBar } from '@/helpers'
 
 const envApiUrl = () => {
-  if (import.meta.env.VITE_MODE === 'development') {
-    return 'http://localhost:8000'
-  }
-  return 'https://todo-app-x4hz.onrender.com'
+  return 'http://localhost:8000'
+  // if (import.meta.env.VITE_MODE === 'development') {
+  //   return 'https://todo-app-x4hz.onrender.com'
+  // }
 }
 
 const apiUrl = envApiUrl()
@@ -20,7 +20,8 @@ api.interceptors.request.use(
   async (config) => {
     if (!document.cookie.includes('XSRF-TOKEN')) {
       await axios.get(`${apiUrl}/sanctum/csrf-cookie`, {
-        withCredentials: true
+        withCredentials: true,
+        withXSRFToken: true
       })
     }
 
