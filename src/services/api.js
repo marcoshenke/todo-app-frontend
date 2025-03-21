@@ -11,8 +11,7 @@ const envApiUrl = () => {
 const apiUrl = envApiUrl()
 const api = axios.create({
   baseURL: `${apiUrl}/api`,
-  withCredentials: true,
-  withXSRFToken: true
+  withCredentials: true
 })
 
 axios.defaults.headers.common['Accept'] = 'application/json'
@@ -20,7 +19,9 @@ axios.defaults.headers.common['Accept'] = 'application/json'
 api.interceptors.request.use(
   async (config) => {
     if (!document.cookie.includes('XSRF-TOKEN')) {
-      await axios.get(`${apiUrl}/sanctum/csrf-cookie`)
+      await axios.get(`${apiUrl}/sanctum/csrf-cookie`, {
+        withCredentials: true
+      })
     }
 
     const token = localStorage.getItem('auth_token')
