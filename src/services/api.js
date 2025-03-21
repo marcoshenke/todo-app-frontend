@@ -11,7 +11,8 @@ const envApiUrl = () => {
 const apiUrl = envApiUrl()
 const api = axios.create({
   baseURL: `${apiUrl}/api`,
-  withCredentials: true
+  withCredentials: true,
+  withXSRFToken: true
 })
 
 axios.defaults.headers.common['Accept'] = 'application/json'
