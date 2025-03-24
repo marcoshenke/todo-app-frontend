@@ -21,9 +21,15 @@ const destroy = async (taskId) => {
   return response.data
 }
 
+const updateOrder = async (data) => {
+  const response = await api.put('/tasks/reorder', data)
+  return response.data
+}
+
 export default {
   create,
+  destroy,
   list,
   update,
-  destroy
+  updateOrder
 }

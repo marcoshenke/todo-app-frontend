@@ -148,7 +148,11 @@ watch(
                 >
                   Close
                 </button>
-                <button type="submit" class="btn btn-light">
+                <button
+                  type="submit"
+                  class="btn btn-light"
+                  :disabled="isLoading"
+                >
                   {{ task ? 'Update' : 'Save' }}
                 </button>
               </div>

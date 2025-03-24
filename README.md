@@ -19,6 +19,7 @@ A simple and elegant Todo App built with Vue.js. This is the frontend interface 
 - [Vee Validate](https://vee-validate.logaretm.com/)
 - [Yup](https://github.com/jquense/yup)
 - [Vue Toast Notification](https://vue-toast-notification.maronato.dev/)
+- [Vue.Draggable](https://github.com/SortableJS/vue.draggable.next)
 
 **Dev Tools:**
 
@@ -61,10 +62,10 @@ npm run dev
 - Basic routing (Home/About)
 - API integration with Axios
 - Responsive design
+- Drag and drop task reordering
 
 📌 Future Improvements
 
+- Progress bar to track task progress
 - Support for deadlines and priorities
 - Unit and integration testing
-- Drag and drop task reordering
-- progress bar to track task progress

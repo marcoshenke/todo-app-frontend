@@ -84,7 +84,11 @@ const onSubmit = handleSubmit(async (values) => {
           <ErrorMessage name="password" class="text-danger" />
         </div>
         <div class="d-flex flex-column gap-2">
-          <button type="submit" class="btn button_primary mh-50">
+          <button
+            type="submit"
+            class="btn button_primary mh-50"
+            :disabled="isLoading"
+          >
             Register
           </button>
           <router-link to="/login" class="btn button_secondary">

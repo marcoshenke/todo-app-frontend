@@ -9,6 +9,7 @@ import { LoadingCircle } from '@/components'
 import { toastBar } from '@/helpers'
 
 const task_date = ref(new Date().toLocaleDateString('fr-CA'))
+
 const tasks = ref([])
 const selectedTask = ref(null)
 const editingTask = ref(null)
@@ -17,12 +18,15 @@ const isLoading = ref(false)
 const fetchTasksByDate = async (date) => {
   try {
     isLoading.value = true
+    tasks.value = []
     const response = await services.tasks.list({
       task_date: date
     })
 
     if (task_date.value !== date) {
-      task_date.value = date
+      const newDate = new Date(date)
+      const formattedDate = newDate.toISOString().split('T')[0]
+      task_date.value = formattedDate
     }
     tasks.value = response
   } catch (error) {
@@ -77,6 +81,22 @@ const manageCompleteTask = async (task) => {
     console.error('Error completing task:', error)
     toastBar({
       message: 'An unexpected error occurred while completing task',
+      type: 'error'
+    })
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const updateTaskOrder = async (newOrder) => {
+  try {
+    isLoading.value = true
+    await services.tasks.updateOrder({ tasks: newOrder })
+    fetchTasksByDate(newOrder[0].task_date)
+  } catch (error) {
+    console.error('Error while reorder tasks:', error)
+    toastBar({
+      message: 'An unexpected error occurred while reorder tasks',
       type: 'error'
     })
   } finally {
@@ -143,6 +163,7 @@ onMounted(() => {
       @manageCompleteTask="manageCompleteTask"
       @deleteTask="deleteTask"
       @opendEditTaskModal="openEditTaskModal"
+      @updateTasksOrder="updateTaskOrder"
     />
     <div
       v-if="pendingTasks.length === 0"

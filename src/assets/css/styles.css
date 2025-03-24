@@ -94,3 +94,20 @@ button {
   height: 50px;
   font-size: 30px;
 }
+
+.dragging {
+  opacity: 0.5; 
+  background-color: #f8f9fa; 
+  border: 1px dashed #6c757d; 
+}
+.drop-target {
+  background-color: #e9ecef; 
+  border: 2px dashed #6c757d; 
+}
+.draggable-item {
+  cursor: grab;
+}
+
+.draggable-item:active {
+  cursor: grabbing;
+}
